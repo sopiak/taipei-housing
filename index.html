@@ -320,24 +320,25 @@ function initMap(){
 initMap();
 
 // ---- list ----
-var ST={dist:'全部',type:'全部',age:'全部',price:'全部',fit:'全部',mark:'全部',sort:'default',q:'',view:'cards'};
+var ST={dist:'全部',type:'全部',age:'全部',price:'全部',fit:'全部',mark:'不含不考慮',sort:'default',q:'',view:'cards'};
 function fillSel(id,opts,key){var el=document.getElementById(id);el.innerHTML=opts.map(function(o){var v=o.v!==undefined?o.v:o,l=o.l!==undefined?o.l:o;return '<option value="'+esc(v)+'">'+esc(l)+'</option>';}).join('');el.addEventListener('change',function(){ST[key]=el.value;renderList();});}
 fillSel('fDist',['全部','大安區','士林區','北投區'],'dist');
 fillSel('fType',['全部','預售建案','新成屋／新古屋'],'type');
 fillSel('fAge',['全部','預售（未入住）','0–5 年','5–10 年','10–15 年','超過 15 年','未列'],'age');
 fillSel('fPrice',['全部','4,000 萬以下','4,000–5,000 萬','5,000–6,000 萬','6,000 萬以上','總價未列'],'price');
 fillSel('fFit',['全部','符合','略超、可議價','部分符合','待確認'],'fit');
-fillSel('fMark',['全部','想看','已看','不考慮','未標記'],'mark');
+fillSel('fMark',['不含不考慮','全部','想看','已看','不考慮','未標記'],'mark');
 fillSel('fSort',[{v:'default',l:'預設（行政區）'},{v:'totalAsc',l:'總價 低到高'},{v:'totalDesc',l:'總價 高到低'},{v:'unit',l:'單價 低到高'},{v:'ageAsc',l:'屋齡 新到舊'},{v:'ageDesc',l:'屋齡 舊到新'}],'sort');
 document.getElementById('fQ').addEventListener('input',function(e){ST.q=e.target.value;renderList();});
 document.getElementById('vCards').addEventListener('click',function(){ST.view='cards';document.getElementById('vCards').classList.add('on');document.getElementById('vTable').classList.remove('on');renderList();});
 document.getElementById('vTable').addEventListener('click',function(){ST.view='table';document.getElementById('vTable').classList.add('on');document.getElementById('vCards').classList.remove('on');renderList();});
 document.getElementById('fReset').addEventListener('click',function(){
-  ST.dist=ST.type=ST.age=ST.price=ST.fit=ST.mark='全部';ST.sort='default';ST.q='';
-  ['fDist','fType','fAge','fPrice','fFit','fMark'].forEach(function(id){document.getElementById(id).value='全部';});
+  ST.dist=ST.type=ST.age=ST.price=ST.fit='全部';ST.mark='不含不考慮';ST.sort='default';ST.q='';
+  ['fDist','fType','fAge','fPrice','fFit'].forEach(function(id){document.getElementById(id).value='全部';});document.getElementById('fMark').value='不含不考慮';
   document.getElementById('fSort').value='default';document.getElementById('fQ').value='';renderList();});
 function cmpN(a,b,d){if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;return (a-b)*d;}
-function renderList(){
+function syncMapMarks(){if(typeof L==='undefined'||!map)return;MAIN.concat(typeof ALLMAP!=='undefined'?[]:[]).forEach(function(i){var m=markers[i.id];if(!m)return;var lay=layers[i.cat];if(!lay)return;if(String(getMark(i.n))==='3'){if(lay.hasLayer(m))lay.removeLayer(m);}else if(!lay.hasLayer(m))lay.addLayer(m);});}
+function renderList(){setTimeout(syncMapMarks,0);
   var list=MAIN.filter(function(i){
     if(ST.dist!=='全部'&&i.d!==ST.dist)return false;
     if(ST.type==='預售建案'&&i.t!=='預售')return false;
@@ -346,7 +347,7 @@ function renderList(){
     if(ST.price!=='全部'&&priceBucket(i)!==ST.price)return false;
     if(ST.fit!=='全部'&&i.fit!==ST.fit)return false;
     var mk=getMark(i.n)?MS[getMark(i.n)]:'未標記';
-    if(ST.mark!=='全部'&&mk!==ST.mark)return false;
+    if(ST.mark==='不含不考慮'){if(mk==='不考慮')return false;}else if(ST.mark!=='全部'&&mk!==ST.mark)return false;
     if(ST.q.trim()&&(i.n+i.r).indexOf(ST.q.trim())<0)return false;
     return true;});
   if(ST.sort==='totalAsc')list=list.slice().sort(function(a,b){return cmpN(a.pmin,b.pmin,1);});
