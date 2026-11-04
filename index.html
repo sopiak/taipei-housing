@@ -111,7 +111,7 @@ var KEY='taipei-housing-marks-v1';
 var marks={};try{marks=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){marks={};}
 var MS={1:'想看',2:'已看',3:'不考慮'};
 // 預設標記：{ "物件名稱": 1(想看)|2(已看)|3(不考慮) }。localStorage 沒有該物件的標記時才用預設值。
-var DEFAULT_MARKS={"潤泰大安富陽（21 樓景觀 3 房）": 3, "達麗河藴": 3};
+var DEFAULT_MARKS={"大安賦寓 6B": 3, "潤泰大安富陽（21 樓景觀 3 房）": 3, "天母知鈺": 3, "達麗河藴": 3, "樹山丘（邊間 3 房）": 3, "鄉林玉見幸福的家": 3, "士林竣 I（全新鋼骨 3 房）": 3};
 function getMark(n){if(Object.prototype.hasOwnProperty.call(marks,n))return marks[n]||0;return DEFAULT_MARKS[n]||0;}
 function toggleMark(n,s){
   if(getMark(n)===s){if(Object.prototype.hasOwnProperty.call(DEFAULT_MARKS,n))marks[n]=0;else delete marks[n];}
