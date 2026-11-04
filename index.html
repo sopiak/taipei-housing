@@ -78,6 +78,13 @@ ul.b{padding-left:1.2em;margin:8px 0}ul.b li{margin:3px 0}
 footer{max-width:1200px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:.85rem}
 .circ{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--bg)}
 .circ h4{margin:0 0 6px;font-size:1rem}
+nav .copyb{flex:none;min-height:32px;padding:3px 14px;border-radius:999px;font-size:.88rem}
+.copyrow{margin-top:4px}.copyrow .copyb{min-height:44px;padding:8px 18px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:999px;font-size:.95rem;z-index:3000;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+#copyBox{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2500;display:flex;align-items:center;justify-content:center;padding:16px}
+#copyBox .cbin{background:var(--card);color:var(--text);border-radius:12px;padding:16px;width:100%;max-width:520px}
+#copyBox textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}
 @media (max-width:600px){h1{font-size:1.45rem}.cards{grid-template-columns:1fr}#map{height:55vh}}
 </style>
 </head>
@@ -103,6 +110,14 @@ var CATS=D.cats, COLORS=['#d9382f','#2563eb','#16a34a','#d99a00'];
 var KEY='taipei-housing-marks-v1';
 var marks={};try{marks=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){marks={};}
 var MS={1:'想看',2:'已看',3:'不考慮'};
+// 預設標記：{ "物件名稱": 1(想看)|2(已看)|3(不考慮) }。localStorage 沒有該物件的標記時才用預設值。
+var DEFAULT_MARKS={};
+function getMark(n){if(Object.prototype.hasOwnProperty.call(marks,n))return marks[n]||0;return DEFAULT_MARKS[n]||0;}
+function toggleMark(n,s){
+  if(getMark(n)===s){if(Object.prototype.hasOwnProperty.call(DEFAULT_MARKS,n))marks[n]=0;else delete marks[n];}
+  else marks[n]=s;
+  try{localStorage.setItem(KEY,JSON.stringify(marks));}catch(err){}
+}
 
 // ---- items ----
 var items=[];
@@ -126,13 +141,49 @@ function typeLabel(t){return t==='預售'?'預售建案':t==='新成屋'?'新成
 
 // ---- marks ----
 function markBtns(it){
-  return '<div class="marks">'+[1,2,3].map(function(s){return '<button type="button" class="s'+s+(marks[it.n]==s?' on':'')+'" data-mark-id="'+it.id+'" data-mark-s="'+s+'">'+MS[s]+'</button>';}).join('')+'</div>';
+  return '<div class="marks">'+[1,2,3].map(function(s){return '<button type="button" class="s'+s+(getMark(it.n)===s?' on':'')+'" data-mark-id="'+it.id+'" data-mark-s="'+s+'">'+MS[s]+'</button>';}).join('')+'</div>';
 }
+function pad(n){return n<10?'0'+n:''+n;}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function marksText(){
+  var seen={},groups={1:[],2:[],3:[]},total=0;
+  items.forEach(function(it){
+    var s=getMark(it.n);if(!s||!groups[s])return;
+    var label=it.n;if(seen[label]){label=it.n+'（#'+(it.id+1)+'）';}seen[it.n]=true;
+    groups[s].push(label);total++;
+  });
+  if(!total)return '';
+  return '我的看房標記（'+todayStr()+'）\n'+[1,2,3].map(function(s){return MS[s]+'：'+(groups[s].length?groups[s].join('、'):'（無）');}).join('\n');
+}
+var toastT=null;
+function toast(msg){
+  var el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.setAttribute('role','status');document.body.appendChild(el);}
+  el.textContent=msg;el.className='show';clearTimeout(toastT);toastT=setTimeout(function(){el.className='';},3200);
+}
+function showCopyBox(text){
+  var old=document.getElementById('copyBox');if(old)old.remove();
+  var w=document.createElement('div');w.id='copyBox';
+  w.innerHTML='<div class="cbin"><p><b>請手動複製以下文字</b>（已自動全選；手機請長按文字框選「拷貝」），再貼給找房小幫手。</p><textarea readonly rows="8"></textarea><div class="row"><button type="button" class="btn on" data-cb="sel">全選</button><button type="button" class="btn" data-cb="close">關閉</button></div></div>';
+  document.body.appendChild(w);
+  var ta=w.querySelector('textarea');ta.value=text;ta.focus();ta.select();
+  w.addEventListener('click',function(e){var c=e.target.getAttribute&&e.target.getAttribute('data-cb');if(c==='close'||e.target===w)w.remove();if(c==='sel'){ta.focus();ta.select();}});
+}
+function copyMarks(){
+  var text=marksText();
+  if(!text){toast('還沒有標記');return;}
+  var done=function(){toast('已複製標記，貼給找房小幫手即可');};
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done,function(){showCopyBox(text);});
+    }else{showCopyBox(text);}
+  }catch(err){showCopyBox(text);}
+}
+window.__marksText=marksText;
 document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('[data-copy-marks]')){e.preventDefault();copyMarks();return;}
   var b=e.target.closest&&e.target.closest('[data-mark-id]');
   if(b){var it=items[+b.getAttribute('data-mark-id')],s=+b.getAttribute('data-mark-s');
-    if(marks[it.n]===s)delete marks[it.n];else marks[it.n]=s;
-    try{localStorage.setItem(KEY,JSON.stringify(marks));}catch(err){}
+    toggleMark(it.n,s);
     renderList();renderPicks();refreshPopup(it);return;}
   var f=e.target.closest&&e.target.closest('[data-focus-id]');
   if(f){e.preventDefault();focusItem(items[+f.getAttribute('data-focus-id')]);}
@@ -182,7 +233,7 @@ function renderStatic(n){
 // ---- page skeleton ----
 var cnt=function(d){return MAIN.filter(function(i){return i.d===d;}).length;};
 var nav=[['概況','overview'],['優先看','picks'],['地圖','mapsec'],['看房清單','list'],['參考','refs'],['其他區','others'],['生活圈','circles'],['房市現況','market'],['網站比較','sites'],['來源與限制','sources'],['超出預算','over']];
-document.getElementById('nav').innerHTML=nav.map(function(n){return '<a href="#'+n[1]+'">'+n[0]+'</a>';}).join('');
+document.getElementById('nav').innerHTML='<button type="button" class="btn on copyb" data-copy-marks="1">複製我的標記</button>'+nav.map(function(n){return '<a href="#'+n[1]+'">'+n[0]+'</a>';}).join('');
 document.getElementById('summary').textContent=D.summary;
 var app=document.getElementById('app');
 var h='';
@@ -201,7 +252,7 @@ h+='<section class="blk" id="list"><h2>看房清單</h2>'+
  '<label>我的標記<select id="fMark"></select></label>'+
  '<label>排序<select id="fSort"></select></label>'+
  '<label>搜尋名稱或路段<input type="search" id="fQ" placeholder="例如：天母、北士科"></label></div>'+
- '<div class="row"><button class="btn on" type="button" id="vCards">卡片</button><button class="btn" type="button" id="vTable">表格</button><button class="btn" type="button" id="fReset">清除篩選</button><span class="note" id="listCount"></span></div>'+
+ '<div class="row copyrow"><button type="button" class="btn on copyb" data-copy-marks="1">複製我的標記</button><span class="note">複製後貼給找房小幫手，清單就會同步更新。標記只存在這個瀏覽器。</span></div><div class="row"><button class="btn on" type="button" id="vCards">卡片</button><button class="btn" type="button" id="vTable">表格</button><button class="btn" type="button" id="fReset">清除篩選</button><span class="note" id="listCount"></span></div>'+
  '<div id="listOut"></div></section>';
 h+=fold('參考：2 房與 4 房','<p>'+esc(D.refsText)+'</p><div class="cards">'+D.refs.map(function(r){return card(items.filter(function(i){return i.kind==='ref'&&i.n===r.n;})[0],false);}).join('')+'</div>',true,'refs');
 h+=fold('其他區推薦','<p>'+esc(D.othersText)+'</p>'+tableOf(['行政區','預售中位（萬/坪）','3 房 40 坪估算總價','本輪觀察','建議'],D.otherDistricts)+'<div class="cards">'+items.filter(function(i){return i.kind==='other';}).map(function(i){return card(i,false);}).join('')+'</div><p class="note">'+esc(D.othersEnd)+'</p>',false,'others');
@@ -294,7 +345,7 @@ function renderList(){
     if(ST.age!=='全部'&&ageBucket(i)!==ST.age)return false;
     if(ST.price!=='全部'&&priceBucket(i)!==ST.price)return false;
     if(ST.fit!=='全部'&&i.fit!==ST.fit)return false;
-    var mk=marks[i.n]?MS[marks[i.n]]:'未標記';
+    var mk=getMark(i.n)?MS[getMark(i.n)]:'未標記';
     if(ST.mark!=='全部'&&mk!==ST.mark)return false;
     if(ST.q.trim()&&(i.n+i.r).indexOf(ST.q.trim())<0)return false;
     return true;});
