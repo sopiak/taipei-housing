@@ -364,7 +364,7 @@ function renderList(){
 renderList();
 
 // ---- picks ----
-function renderPicks(){document.getElementById('picksCards').innerHTML=D.picks.map(function(n){var it=MAIN.filter(function(i){return i.n===n;})[0];return it?card(it):'';}).join('');}
+function renderPicks(){document.getElementById('picksCards').innerHTML=D.picks.map(function(n){var it=MAIN.filter(function(i){return i.n===n;})[0];return (it&&String(getMark(n))!=='3')?card(it):'';}).join('');}
 renderPicks();
 
 // ---- circles ----
