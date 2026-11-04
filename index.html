@@ -247,7 +247,7 @@ var MAINV=MAIN.filter(function(i){return String(getMark(i.n))!=='3';});
 var cnt=function(d){return MAINV.filter(function(i){return i.d===d;}).length;};
 var nav=[['概況','overview'],['優先看','picks'],['地圖','mapsec'],['看房清單','list'],['參考','refs'],['其他區','others'],['生活圈','circles'],['房市現況','market'],['網站比較','sites'],['來源與限制','sources'],['不考慮','pass'],['超出預算','over']];
 document.getElementById('nav').innerHTML='<button type="button" class="btn on copyb" data-copy-marks="1">複製我的標記</button>'+nav.map(function(n){return '<a href="#'+n[1]+'">'+n[0]+'</a>';}).join('');
-document.getElementById('summary').textContent=D.summary;
+(function(){var t=new Date(document.lastModified),txt;if(!isNaN(t)&&location.protocol.indexOf('http')===0){txt=t.toLocaleString('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})+'（台北時間）';}else{txt=D.date;}document.getElementById('summary').textContent='上次更新：'+txt;})();
 var app=document.getElementById('app');
 var h='';
 h+='<div class="callout"><b>目前篩選條件（使用者已確認）</b>'+esc(D.condition)+'</div>';
