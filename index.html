@@ -13,12 +13,12 @@ html{scroll-behavior:smooth;scroll-padding-top:56px}
 body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.65;font-size:15px}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:.92em}
-header{padding:28px 16px 12px;max-width:1200px;margin:0 auto}
+header{padding:28px 16px 12px;max-width:1500px;margin:0 auto}
 h1{margin:0 0 6px;font-size:1.8rem}
 .sub{color:var(--sub);margin:0}
-.wrap{max-width:1200px;margin:0 auto;padding:0 16px 48px}
+.wrap{max-width:1500px;margin:0 auto;padding:0 16px 48px}
 nav{position:sticky;top:0;z-index:900;background:var(--bg);border-bottom:1px solid var(--line)}
-nav .in{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;white-space:nowrap}
+nav .in{max-width:1500px;margin:0 auto;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;white-space:nowrap}
 nav a{background:var(--chip);color:var(--text);padding:4px 12px;border-radius:999px;font-size:.88rem;flex:none}
 .callout{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px;margin:12px 0}
 .callout b{display:block;margin-bottom:4px}
@@ -40,7 +40,10 @@ details.fold details.fold>summary{font-size:1rem}
 select,input[type=search],button.btn{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);min-height:38px}
 button.btn{cursor:pointer}button.btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:1100px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:780px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.cards{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
 .card h3{margin:0;font-size:1.05rem;line-height:1.35}
 .badges{display:flex;flex-wrap:wrap;gap:5px}
@@ -55,11 +58,19 @@ dl.facts dt{color:var(--sub)}dl.facts dd{margin:0;word-break:break-word}
 .marks button{font:inherit;font-size:.82rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
 .marks button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .marks button.on.s2{background:var(--ok);border-color:var(--ok)}.marks button.on.s3{background:var(--sub);border-color:var(--sub)}
-.tw{overflow-x:auto;margin:10px 0;border:1px solid var(--line);border-radius:10px}
-table{border-collapse:collapse;width:100%;font-size:.86rem;background:var(--card)}
-th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;min-width:90px}
-th{background:var(--chip);position:sticky;top:0;white-space:nowrap}
-td.n{font-weight:600;min-width:130px}
+.tw{margin:10px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 18px;margin:10px 0}
+.fgt{font-size:.8rem;color:var(--sub);margin-bottom:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.85rem;padding:5px 12px;min-height:36px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fnote{margin:0 0 6px}
+table{border-collapse:collapse;width:100%;table-layout:auto;font-size:.78rem;line-height:1.45;background:var(--card)}
+th,td{padding:6px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:anywhere;word-break:break-word}
+th{background:var(--chip)}
+td .marks button{padding:2px 7px;font-size:.74rem}
+td.n{font-weight:600}
+@media (max-width:1000px){table.rt thead{display:none}table.rt,table.rt tbody,table.rt tr,table.rt td{display:block;width:100%}table.rt tr{border-bottom:6px solid var(--bg);padding:6px 0}table.rt td{border:none;padding:3px 10px;display:grid;grid-template-columns:7em 1fr;gap:6px}table.rt td::before{content:attr(data-label);color:var(--sub)}table.rt td.n{font-size:.95rem}}
 tr:last-child td{border-bottom:none}
 #map{height:62vh;min-height:360px;border-radius:12px;border:1px solid var(--line)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0;font-size:.9rem}
@@ -75,7 +86,7 @@ ul.b{padding-left:1.2em;margin:8px 0}ul.b li{margin:3px 0}
 .linkgrid a{display:block;background:var(--chip);border-radius:8px;padding:8px 10px;color:var(--text)}
 .linkgrid a small{display:block;color:var(--sub)}
 .note{color:var(--sub);font-size:.88rem}
-footer{max-width:1200px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:.85rem}
+footer{max-width:1500px;margin:0 auto;padding:0 16px 40px;color:var(--sub);font-size:.85rem}
 .circ{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:var(--bg)}
 .circ h4{margin:0 0 6px;font-size:1rem}
 nav .copyb{flex:none;min-height:32px;padding:3px 14px;border-radius:999px;font-size:.88rem}
@@ -85,7 +96,7 @@ nav .copyb{flex:none;min-height:32px;padding:3px 14px;border-radius:999px;font-s
 #copyBox{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2500;display:flex;align-items:center;justify-content:center;padding:16px}
 #copyBox .cbin{background:var(--card);color:var(--text);border-radius:12px;padding:16px;width:100%;max-width:520px}
 #copyBox textarea{width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}
-@media (max-width:600px){h1{font-size:1.45rem}.cards{grid-template-columns:1fr}#map{height:55vh}}
+@media (max-width:600px){h1{font-size:1.45rem}#map{height:55vh}}
 </style>
 </head>
 <body>
@@ -214,8 +225,8 @@ function card(it,showMark){
     (showMark===false?'':markBtns(it))+'<div class="links">'+A(it.url,'來源：'+it.src)+(it.alt||[]).map(function(a){return A(a.u,'另見：'+a.l);}).join('')+mapLink(it)+'</div></article>';
 }
 function tableOf(cols,rows){
-  return '<div class="tw"><table><thead><tr>'+cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
-    rows.map(function(r){return '<tr>'+r.map(function(c,i){return '<td'+(i===0?' class="n"':'')+'>'+(c&&c.u?A(c.u,c.l):(c&&c.html!==undefined?c.html:md(c)))+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+  return '<div class="tw"><table class="rt"><thead><tr>'+cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+
+    rows.map(function(r){return '<tr>'+r.map(function(c,i){return '<td'+(i===0?' class="n"':'')+' data-label="'+esc(cols[i])+'">'+(c&&c.u?A(c.u,c.l):(c&&c.html!==undefined?c.html:md(c)))+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
 }
 function bullets(a){return '<ul class="b">'+a.map(function(x){return '<li>'+md(x)+'</li>';}).join('')+'</ul>';}
 function links(a){return '<div class="linkgrid">'+a.map(function(l){return '<a href="'+esc(l.href)+'" target="_blank" rel="noopener noreferrer">'+esc(l.title)+'<small>'+esc(l.site||'')+'</small></a>';}).join('')+'</div>';}
@@ -246,16 +257,18 @@ h+='<section class="blk" id="overview"><h2>收錄概況</h2><p class="note">'+es
 h+='<section class="blk" id="picks"><h2>優先看的物件</h2><p class="note">'+esc(D.picksNote)+'</p><div class="cards" id="picksCards"></div></section>';
 h+='<section class="blk" id="mapsec"><h2>地圖位置</h2><p class="note" id="mapNote"></p><div class="legend" id="legend"></div><div id="map"></div><p class="note">'+esc(D.mapNote2)+'</p></section>';
 h+='<section class="blk" id="list"><h2>看房清單</h2>'+
+ '<div class="fgs">'+
+ '<div class="fg"><div class="fgt">行政區</div><div class="chips" id="fDist"></div></div>'+
+ '<div class="fg"><div class="fgt">類型</div><div class="chips" id="fType"></div></div>'+
+ '<div class="fg"><div class="fgt">屋齡</div><div class="chips" id="fAge"></div></div>'+
+ '<div class="fg"><div class="fgt">總價（以最低已知總價分級）</div><div class="chips" id="fPrice"></div></div>'+
+ '<div class="fg"><div class="fgt">預算符合</div><div class="chips" id="fFit"></div></div>'+
+ '<div class="fg"><div class="fgt">我的標記（預設不顯示不考慮）</div><div class="chips" id="fMark"></div></div>'+
+ '</div><p class="note fnote">每組可複選；同組是「或」，不同組是「且」；整組都不選就是不限。</p>'+
  '<div class="filters">'+
- '<label>行政區<select id="fDist"></select></label>'+
- '<label>類型<select id="fType"></select></label>'+
- '<label>屋齡<select id="fAge"></select></label>'+
- '<label>總價（以最低已知總價分級）<select id="fPrice"></select></label>'+
- '<label>預算符合<select id="fFit"></select></label>'+
- '<label>我的標記<select id="fMark"></select></label>'+
  '<label>排序<select id="fSort"></select></label>'+
  '<label>搜尋名稱或路段<input type="search" id="fQ" placeholder="例如：天母、北士科"></label></div>'+
- '<div class="row copyrow"><button type="button" class="btn on copyb" data-copy-marks="1">複製我的標記</button><span class="note">複製後貼給找房小幫手，清單就會同步更新。標記只存在這個瀏覽器。</span></div><div class="row"><button class="btn on" type="button" id="vCards">卡片</button><button class="btn" type="button" id="vTable">表格</button><button class="btn" type="button" id="fReset">清除篩選</button><span class="note" id="listCount"></span></div>'+
+ '<div class="row copyrow"><button type="button" class="btn on copyb" data-copy-marks="1">複製我的標記</button><span class="note">複製後貼給找房小幫手，清單就會同步更新。標記只存在這個瀏覽器。</span></div><div class="row"><button class="btn on" type="button" id="vCards">卡片</button><button class="btn" type="button" id="vTable">表格</button><button class="btn" type="button" id="fReset">重設篩選</button><span class="note" id="listCount"></span></div>'+
  '<div id="listOut"></div></section>';
 h+=fold('參考：2 房與 4 房','<p>'+esc(D.refsText)+'</p><div class="cards">'+D.refs.map(function(r){return card(items.filter(function(i){return i.kind==='ref'&&i.n===r.n;})[0],false);}).join('')+'</div>',true,'refs');
 h+=fold('其他區推薦','<p>'+esc(D.othersText)+'</p>'+tableOf(['行政區','預售中位（萬/坪）','3 房 40 坪估算總價','本輪觀察','建議'],D.otherDistricts)+'<div class="cards">'+items.filter(function(i){return i.kind==='other';}).map(function(i){return card(i,false);}).join('')+'</div><p class="note">'+esc(D.othersEnd)+'</p>',false,'others');
@@ -325,35 +338,33 @@ function initMap(){
 initMap();
 
 // ---- list ----
-var ST={dist:'全部',type:'全部',age:'全部',price:'全部',fit:'全部',mark:'不含不考慮',sort:'default',q:'',view:'cards'};
+var DEFMARK=['想看','已看','未標記'];
+var ST={dist:[],type:[],age:[],price:[],fit:[],mark:DEFMARK.slice(),sort:'default',q:'',view:'cards'};
+var CHIPS={dist:['大安區','士林區','北投區'],type:['預售建案','新成屋／新古屋'],age:['預售（未入住）','0–5 年','5–10 年','10–15 年','超過 15 年','未列'],price:['4,000 萬以下','4,000–5,000 萬','5,000–6,000 萬','6,000 萬以上','總價未列'],fit:['符合','略超、可議價','部分符合','待確認'],mark:['想看','已看','不考慮','未標記']};
+var CHIPID={dist:'fDist',type:'fType',age:'fAge',price:'fPrice',fit:'fFit',mark:'fMark'};
+function drawChips(){Object.keys(CHIPS).forEach(function(k){document.getElementById(CHIPID[k]).innerHTML=CHIPS[k].map(function(o){return '<button type="button" class="chip" data-fk="'+k+'" data-fv="'+esc(o)+'" aria-pressed="'+(ST[k].indexOf(o)>=0?'true':'false')+'">'+esc(o)+'</button>';}).join('');});}
+document.querySelector('.fgs').addEventListener('click',function(e){var b=e.target.closest('[data-fk]');if(!b)return;var k=b.getAttribute('data-fk'),v=b.getAttribute('data-fv'),i=ST[k].indexOf(v);if(i>=0)ST[k].splice(i,1);else ST[k].push(v);drawChips();renderList();});
+drawChips();
 function fillSel(id,opts,key){var el=document.getElementById(id);el.innerHTML=opts.map(function(o){var v=o.v!==undefined?o.v:o,l=o.l!==undefined?o.l:o;return '<option value="'+esc(v)+'">'+esc(l)+'</option>';}).join('');el.addEventListener('change',function(){ST[key]=el.value;renderList();});}
-fillSel('fDist',['全部','大安區','士林區','北投區'],'dist');
-fillSel('fType',['全部','預售建案','新成屋／新古屋'],'type');
-fillSel('fAge',['全部','預售（未入住）','0–5 年','5–10 年','10–15 年','超過 15 年','未列'],'age');
-fillSel('fPrice',['全部','4,000 萬以下','4,000–5,000 萬','5,000–6,000 萬','6,000 萬以上','總價未列'],'price');
-fillSel('fFit',['全部','符合','略超、可議價','部分符合','待確認'],'fit');
-fillSel('fMark',['不含不考慮','全部','想看','已看','不考慮','未標記'],'mark');
 fillSel('fSort',[{v:'default',l:'預設（行政區）'},{v:'totalAsc',l:'總價 低到高'},{v:'totalDesc',l:'總價 高到低'},{v:'unit',l:'單價 低到高'},{v:'ageAsc',l:'屋齡 新到舊'},{v:'ageDesc',l:'屋齡 舊到新'}],'sort');
 document.getElementById('fQ').addEventListener('input',function(e){ST.q=e.target.value;renderList();});
 document.getElementById('vCards').addEventListener('click',function(){ST.view='cards';document.getElementById('vCards').classList.add('on');document.getElementById('vTable').classList.remove('on');renderList();});
 document.getElementById('vTable').addEventListener('click',function(){ST.view='table';document.getElementById('vTable').classList.add('on');document.getElementById('vCards').classList.remove('on');renderList();});
 document.getElementById('fReset').addEventListener('click',function(){
-  ST.dist=ST.type=ST.age=ST.price=ST.fit='全部';ST.mark='不含不考慮';ST.sort='default';ST.q='';
-  ['fDist','fType','fAge','fPrice','fFit'].forEach(function(id){document.getElementById(id).value='全部';});document.getElementById('fMark').value='不含不考慮';
-  document.getElementById('fSort').value='default';document.getElementById('fQ').value='';renderList();});
+  ST.dist=[];ST.type=[];ST.age=[];ST.price=[];ST.fit=[];ST.mark=DEFMARK.slice();ST.sort='default';ST.q='';
+  drawChips();document.getElementById('fSort').value='default';document.getElementById('fQ').value='';renderList();});
 function cmpN(a,b,d){if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;return (a-b)*d;}
 function syncMapMarks(){if(typeof L==='undefined'||!map)return;MAIN.concat(typeof ALLMAP!=='undefined'?[]:[]).forEach(function(i){var m=markers[i.id];if(!m)return;var lay=layers[i.cat];if(!lay)return;if(String(getMark(i.n))==='3'){if(lay.hasLayer(m))lay.removeLayer(m);}else if(!lay.hasLayer(m))lay.addLayer(m);});}
 function renderPass(){var el=document.getElementById('passOut');if(!el)return;var ps=MAIN.filter(function(i){return String(getMark(i.n))==='3';});el.innerHTML=ps.length?'<div class="cards">'+ps.map(function(i){return card(i);}).join('')+'</div>':'<p class="note">目前沒有標記為不考慮的物件。</p>';}
 function renderList(){setTimeout(syncMapMarks,0);renderPass();
   var list=MAIN.filter(function(i){
-    if(ST.dist!=='全部'&&i.d!==ST.dist)return false;
-    if(ST.type==='預售建案'&&i.t!=='預售')return false;
-    if(ST.type==='新成屋／新古屋'&&i.t==='預售')return false;
-    if(ST.age!=='全部'&&ageBucket(i)!==ST.age)return false;
-    if(ST.price!=='全部'&&priceBucket(i)!==ST.price)return false;
-    if(ST.fit!=='全部'&&i.fit!==ST.fit)return false;
-    var mk=getMark(i.n)?MS[getMark(i.n)]:'未標記';
-    if(ST.mark==='不含不考慮'){if(mk==='不考慮')return false;}else if(ST.mark!=='全部'&&mk!==ST.mark)return false;
+    var inG=function(k,v){return ST[k].length===0||ST[k].indexOf(v)>=0;};
+    if(!inG('dist',i.d))return false;
+    if(!inG('type',i.t==='預售'?'預售建案':'新成屋／新古屋'))return false;
+    if(!inG('age',ageBucket(i)))return false;
+    if(!inG('price',priceBucket(i)))return false;
+    if(!inG('fit',i.fit))return false;
+    if(!inG('mark',getMark(i.n)?MS[getMark(i.n)]:'未標記'))return false;
     if(ST.q.trim()&&(i.n+i.r).indexOf(ST.q.trim())<0)return false;
     return true;});
   if(ST.sort==='totalAsc')list=list.slice().sort(function(a,b){return cmpN(a.pmin,b.pmin,1);});
@@ -365,8 +376,8 @@ function renderList(){setTimeout(syncMapMarks,0);renderPass();
   var out=document.getElementById('listOut');
   if(!list.length){out.innerHTML='<p class="note">沒有符合篩選條件的物件。</p>';return;}
   if(ST.view==='cards'){out.innerHTML='<div class="cards">'+list.map(function(i){return card(i);}).join('')+'</div>';return;}
-  out.innerHTML='<div class="tw"><table><thead><tr>'+['名稱','行政區','類型','路段','生活圈','總價','單價','3 房坪數與格局','屋齡／完工','車位','預算','標記','來源','地圖'].map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>'+
-   list.map(function(i){return '<tr><td class="n">'+(i.isNew?'<span class="badge new">新</span> ':'')+esc(i.n)+'</td><td>'+esc(i.d)+'</td><td>'+typeLabel(i.t)+'</td><td>'+esc(i.r)+'</td><td>'+esc(D.circleOf[i.n]||'未列')+'</td><td>'+esc(i.price)+'</td><td>'+esc(i.unit)+'</td><td>'+esc(i.size)+'</td><td>'+esc(i.age)+'</td><td>'+esc(i.park)+'</td><td>'+esc(i.fit)+'</td><td>'+markBtns(i)+'</td><td>'+A(i.url,i.src)+'</td><td>'+(i.geo?A(gmu(i.geo),'Google 地圖'+(i.geo.exact?'':'（大約）')):'未定位')+'</td></tr>';}).join('')+'</tbody></table></div>';
+  out.innerHTML='<div class="tw"><table class="rt"><thead><tr>'+['名稱','行政區','類型','路段','生活圈','總價','單價','3 房坪數與格局','屋齡／完工','車位','預算','標記','來源','地圖'].map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>'+
+   list.map(function(i){return '<tr><td class="n" data-label="名稱">'+(i.isNew?'<span class="badge new">新</span> ':'')+esc(i.n)+'</td><td data-label="行政區">'+esc(i.d)+'</td><td data-label="類型">'+typeLabel(i.t)+'</td><td data-label="路段">'+esc(i.r)+'</td><td data-label="生活圈">'+esc(D.circleOf[i.n]||'未列')+'</td><td data-label="總價">'+esc(i.price)+'</td><td data-label="單價">'+esc(i.unit)+'</td><td data-label="3 房坪數與格局">'+esc(i.size)+'</td><td data-label="屋齡／完工">'+esc(i.age)+'</td><td data-label="車位">'+esc(i.park)+'</td><td data-label="預算">'+esc(i.fit)+'</td><td data-label="標記">'+markBtns(i)+'</td><td data-label="來源">'+A(i.url,i.src)+'</td><td data-label="地圖">'+(i.geo?A(gmu(i.geo),'Google 地圖'+(i.geo.exact?'':'（大約）')):'未定位')+'</td></tr>';}).join('')+'</tbody></table></div>';
 }
 renderList();
 
