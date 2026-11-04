@@ -254,8 +254,8 @@ h+='<div class="callout"><b>目前篩選條件（使用者已確認）</b>'+esc(
 if(D.updateNote)h+='<div class="callout"><b>今日更新</b>'+esc(D.updateNote)+'</div>';
 h+='<section class="blk" id="overview"><h2>收錄概況</h2><p class="note">'+esc('主清單共 '+MAINV.length+' 筆（其中 2026-11-04 新增 '+MAINV.filter(function(i){return i.isNew;}).length+' 筆；另有 '+(MAIN.length-MAINV.length)+' 筆標記為不考慮、'+OVER.length+' 筆超出預算，各收在折疊區），參考區 '+D.refs.length+' 筆，其他區 '+D.others.length+' 筆，皆附真實來源連結；查不到的欄位寫「未列」。價格多為掛牌價、開價或實價登錄成交，並非建商正式報價。')+'</p>'+
  '<div class="metrics">'+[['大安區',cnt('大安區')],['士林區',cnt('士林區')],['北投區',cnt('北投區')],['主清單合計',MAINV.length],['今日新增',MAINV.filter(function(i){return i.isNew;}).length],['參考',D.refs.length],['其他區',D.others.length]].map(function(m){return '<div class="metric"><div class="v">'+m[1]+'</div><div class="l">'+m[0]+'</div></div>';}).join('')+'</div></section>';
-h+='<section class="blk" id="picks"><h2>優先看的物件</h2><p class="note">'+esc(D.picksNote)+'</p><div class="cards" id="picksCards"></div></section>';
 h+='<section class="blk" id="mapsec"><h2>地圖位置</h2><p class="note" id="mapNote"></p><div class="legend" id="legend"></div><div id="map"></div><p class="note">'+esc(D.mapNote2)+'</p></section>';
+h+='<section class="blk" id="picks"><h2>優先看的物件</h2><p class="note">'+esc(D.picksNote)+'</p><div class="cards" id="picksCards"></div></section>';
 h+='<section class="blk" id="list"><h2>看房清單</h2>'+
  '<div class="fgs">'+
  '<div class="fg"><div class="fgt">行政區</div><div class="chips" id="fDist"></div></div>'+
